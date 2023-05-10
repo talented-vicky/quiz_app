@@ -20,8 +20,9 @@ class Quiz extends StatelessWidget {
       // the spread operator takes the list and renders its component as individual
       // items, hence we're not adding a list to a list(the Column) but the values
       // of a list
-      ...(dict[counter]['ansHolder'] as List<String>).map((res) {
-        return Answer(answerCall: ans, answer: res);
+      ...(dict[counter]['ansHolder'] as List<Map<String, Object>>).map((res) {
+        return Answer(
+            answerCall: () => ans(res['score']), answer: res['text'] as String);
       }).toList(),
     ]);
   }

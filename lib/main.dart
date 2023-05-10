@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:quiz_app/quiz.dart';
 import 'package:quiz_app/result.dart';
 
@@ -19,28 +18,49 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var _totalScore = 0;
   var _questInt = 0;
   final _questions = const [
     {
       'questHolder': 'Which of these is not a user status?',
-      'ansHolder': ['User', 'Admin', 'Analyst', 'Operator']
+      'ansHolder': [
+        {'text': 'User', 'score': 0},
+        {'text': 'Admin', 'score': 1},
+        {'text': 'Analyst', 'score': 0},
+        {'text': 'Operator', 'score': 0}
+      ]
     },
     {
       'questHolder': 'What day is independence',
-      'ansHolder': ['May 1st', 'July 4th', 'October 1st']
+      'ansHolder': [
+        {'text': 'May 1st', 'score': 0},
+        {'text': 'July 4th', 'score': 0},
+        {'text': 'October 1st', 'score': 1},
+      ]
     },
     {
       'questHolder': 'How is matter formed',
       'ansHolder': [
-        'Big bang theory',
-        'From nothing',
-        'Atoms form them',
-        'From words'
+        {'text': 'Big bang theory', 'score': 0},
+        {'text': 'From nothing', 'score': 0},
+        {'text': 'Atoms form them', 'score': 1},
+        {'text': 'From words', 'score': 0}
       ]
     }
   ];
+
   @override
-  void _answer() {
+  void _restartQuiz() {
+    setState(() {
+      _totalScore = 0;
+      _questInt = 0;
+    });
+  }
+
+  @override
+  void _answer(int score) {
+    _totalScore += score;
+
     setState(() {
       _questInt += 1;
     });
@@ -67,7 +87,7 @@ class _MyAppState extends State<MyApp> {
                 counter: _questInt,
                 ans: _answer,
               )
-            : const Result(),
+            : Result(score: _totalScore, start: _restartQuiz),
       ),
     );
   }
